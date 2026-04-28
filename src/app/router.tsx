@@ -17,6 +17,8 @@ import {
   Success,
 } from "../pages";
 
+import { Dashboard } from "../features/hr";
+
 const AppRouter: React.FC = () => {
   return (
     <Router>
@@ -35,6 +37,8 @@ const AppRouter: React.FC = () => {
 
         
         <Route path="/success" element={<Success />} />
+        
+        <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
