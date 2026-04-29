@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  Settings,
-  CalendarCheck,
-  Clock,
-  X,
-} from "lucide-react";
+import { User, FileCheck2, Clock, X } from "lucide-react";
 
 import { dashboardiImg } from "../../../assets/images";
 import { HrNav } from "../common";
@@ -24,6 +19,13 @@ import {
 type ModalWrapperProps = {
   children: React.ReactNode;
   onClose: () => void;
+};
+
+type CardProps = {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  onClick: () => void;
 };
 
 const ModalWrapper = ({ children, onClose }: ModalWrapperProps) => {
@@ -47,6 +49,38 @@ const ModalWrapper = ({ children, onClose }: ModalWrapperProps) => {
   );
 };
 
+const DashboardCard = ({ title, description, icon, onClick }: CardProps) => {
+  return (
+    <div
+      onClick={onClick}
+      className="
+        w-[300px] h-[160px]
+        rounded-[22px]
+        border-2 border-[#D4D6E2]
+        bg-[#F8F8FF]
+        px-4 py-7
+        cursor-pointer
+        transition
+        hover:shadow-md
+      "
+    >
+      <div className="flex items-center gap-3 mb-7">
+        <div className="w-[31px] h-[31px] rounded-[5px] bg-[#5863B2] flex items-center justify-center text-white">
+          {icon}
+        </div>
+
+        <h3 className="text-[17px] font-medium text-[#5863B2]">
+          {title}
+        </h3>
+      </div>
+
+      <p className="text-[15px] leading-[22px] text-[#5863B2]">
+        {description}
+      </p>
+    </div>
+  );
+};
+
 const DashboardHome = ({
   openEmployee,
   openLeave,
@@ -57,75 +91,53 @@ const DashboardHome = ({
   openAttendance: () => void;
 }) => {
   return (
-    <>
-      <div className="bg-white/40 backdrop-blur-md rounded-xl p-4 md:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center mb-6 md:mb-8">
-        {/* <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#5B6CFF]/20 flex items-center justify-center"> */}
-          <img 
-            src={dashboardiImg}
-            alt="Dashboard icon"
-            className="w-8 h-8  relative top-[0px] md:w-50 md:h-50"
-          />
-        {/* </div> */}
+    <div className="w-full h-200 p-10 max-[480px]:p-0">
+      {/* Welcome section - keeping your existing image */}
+      <div className="relative bg-[#E8EAF6] rounded-2xl flex flex-row items-center w-120 mb-6 md:mb-8 overflow-visible pl-28 md:pl-36 pr-6 py-5 max-md:w-auto max-[450px]: ">
+  <img
+    src={dashboardiImg}
+    alt="Dashboard icon"
+    className="absolute -left-4 bottom-0 w-28 md:w-36 object-contain "
+  />
 
-        <div>
-          <h2 className="text-xl md:text-2xl font-semibold text-[#5863B2]">
-            Welcome, Deena
-          </h2>
-          <p className="text-gray-600 text-xs md:text-sm">
-            Have a nice day at work
-          </p>
-        </div>
-      </div>
+  <div className="flex flex-col justify-center pl-10 py-2">
+    <h2 className="text-xl md:text-3xl font-bold text-[#5863B2]">
+      Welcome, Deena
+    </h2>
+    <p className="text-[#5863B2]/80 text-xs md:text-lg mt-0.5">
+      Have a nice day at work
+    </p>
+  </div>
+</div> 
 
-      <div className="bg-white/40 backdrop-blur-md rounded-xl p-4 md:p-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          <div
-            className="bg-white rounded-xl p-4 md:p-5 flex gap-3 md:gap-4 hover:shadow-md transition cursor-pointer group"
+      {/* Cards section */}
+      <div className="w-full bg-[#E6E8F5] rounded-[12px] p-8 h-150">
+        <div className="flex flex-wrap justify-around gap-5">
+          <DashboardCard
+            title="Set Employee fields"
+            description="Manage employee fields, roles, and information ect..."
+            icon={<User size={22} fill="white" strokeWidth={2.5} />}
             onClick={openEmployee}
-          >
-            <Settings className="text-[#5B6CFF] flex-shrink-0 w-6 h-6 group-hover:scale-110 transition-transform" />
-            <div>
-              <h3 className="font-semibold text-sm md:text-base">
-                Set Employee fields
-              </h3>
-              <p className="text-xs md:text-sm text-gray-500">
-                Manage employee fields, roles, and information
-              </p>
-            </div>
-          </div>
+          />
 
-          <div
-            className="bg-white rounded-xl p-4 md:p-5 flex gap-3 md:gap-4 hover:shadow-md transition cursor-pointer group"
+          <DashboardCard
+            title="Set Leave Policy & Holiday"
+            description="Define leave rules, holiday calendars, and approvals."
+            icon={<FileCheck2 size={22} strokeWidth={2.5} />}
             onClick={openLeave}
-          >
-            <CalendarCheck className="text-[#5B6CFF] flex-shrink-0 w-6 h-6 group-hover:scale-110 transition-transform" />
-            <div>
-              <h3 className="font-semibold text-sm md:text-base">
-                Set Leave Policy & Holiday
-              </h3>
-              <p className="text-xs md:text-sm text-gray-500">
-                Define leave rules, holiday calendars and approvals
-              </p>
-            </div>
-          </div>
+          />
 
-          <div
-            className="bg-white rounded-xl p-4 md:p-5 flex gap-3 md:gap-4 hover:shadow-md transition cursor-pointer group"
+          <DashboardCard
+            title="Set Attendance"
+            description="Configure shifts, work hours, and attendance rules."
+            icon={<Clock size={23} strokeWidth={2.5} />}
             onClick={openAttendance}
-          >
-            <Clock className="text-[#5B6CFF] flex-shrink-0 w-6 h-6 group-hover:scale-110 transition-transform" />
-            <div>
-              <h3 className="font-semibold text-sm md:text-base">
-                Set Attendance
-              </h3>
-              <p className="text-xs md:text-sm text-gray-500">
-                Configure shifts, work hours, and attendance rules
-              </p>
-            </div>
-          </div>
+          />
         </div>
+
+        <div className="h-[145px]" />
       </div>
-    </>
+    </div>
   );
 };
 
@@ -169,8 +181,8 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row min-h-screen">
         <HrNav activePage={activePage} onPageChange={setActivePage} />
 
-        <main className="flex-1 p-4 md:p-8 bg-white">
-          <div className="bg-[#EDF0FB] rounded-2xl p-4 md:p-8 shadow-sm min-h-full">
+        <main className="flex-1 p-4 bg-white">
+          <div className="bg-[#EDF0FB] rounded-2xl p-5 min-h-[560px] shadow-sm">
             {renderPage()}
           </div>
         </main>
