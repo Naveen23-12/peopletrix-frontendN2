@@ -2,12 +2,13 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 
-import Gradient from "../../../components/common/Gradient";
+import Gradient from "../../../../components/common/Gradient";
+import { getAxiosErrorMessage } from "../../../../utils";
+
 import {
   createLeavePolicyAPI,
   createHolidayPolicyAPI,
-} from "../api";
-import { getAxiosErrorMessage } from "../../../utils";
+} from "../../../../features/hr/api";
 
 type LeaveType = {
   name: string;

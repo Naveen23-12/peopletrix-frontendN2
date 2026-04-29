@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
-import Gradient from "../../../components/common/Gradient";
+import Gradient from "../../../../components/common/Gradient";
+import { getAxiosErrorMessage } from "../../../../utils";
 import {
   getCustomFieldsAPI,
   createCustomFieldAPI,
-} from "../api";
-import { getAxiosErrorMessage } from "../../../utils";
+} from "../../../../features/hr/api";
 
 type CustomField = {
   _id?: string;

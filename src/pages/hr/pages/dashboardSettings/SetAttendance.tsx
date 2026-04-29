@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-import Gradient from "../../../components/common/Gradient";
-import { createAttendancePolicyAPI } from "../api";
-import { getAxiosErrorMessage } from "../../../utils";
+import Gradient from "../../../../components/common/Gradient";
+import { getAxiosErrorMessage } from "../../../../utils";
+
+import { createAttendancePolicyAPI } from "../../../../features/hr/api";
 
 type SetAttendanceProps = {
   onClose: () => void;

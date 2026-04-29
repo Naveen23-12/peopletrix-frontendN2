@@ -15,9 +15,8 @@ import {
   SetPassword,
   PasswordReset,
   Success,
+  HrDashboard,
 } from "../pages";
-
-import { Dashboard } from "../features/hr";
 
 const AppRouter: React.FC = () => {
   return (
@@ -35,10 +34,10 @@ const AppRouter: React.FC = () => {
         <Route path="/setPassword" element={<SetPassword />} />
         <Route path="/passwordReset" element={<PasswordReset />} />
 
-        
+        <Route path="/Success" element={<Success />} />
         <Route path="/success" element={<Success />} />
-        
-        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/dashboard" element={<HrDashboard />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
