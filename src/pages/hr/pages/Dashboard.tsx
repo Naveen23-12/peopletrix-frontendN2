@@ -56,7 +56,7 @@ const DashboardCard = ({ title, description, icon, onClick }: CardProps) => {
       className="
         w-[300px] h-[160px]
         rounded-[22px]
-        border-2 border-[#D4D6E2]
+        border-2 border-[#D4D6E2] 
         bg-[#F8F8FF]
         px-4 py-7
         cursor-pointer

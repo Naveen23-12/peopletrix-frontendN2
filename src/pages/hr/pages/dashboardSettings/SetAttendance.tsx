@@ -71,7 +71,9 @@ const SetAttendance = ({ onClose }: SetAttendanceProps) => {
 
   return (
     <div className="w-full flex items-center justify-center bg-transparent p-4 sm:p-0">
-      <div className="w-full max-w-sm sm:max-w-[80%] sm:w-[50%] sm:min-w-[500px] rounded-3xl mx-auto relative flex flex-col overflow-hidden bg-[#E9EBF7] px-6 sm:px-14 py-8 sm:py-10 min-h-[80vh]">
+
+      
+    <div className="w-full sm:w-[50%]  rounded-3xl mx-auto relative flex flex-col overflow-hidden bg-[#E9EBF7] px-6 sm:px-14 py-8 sm:py-10 min-h-[80vh]">
   
   {/* Close Button - solid blue */}
   <button
@@ -110,7 +112,7 @@ const SetAttendance = ({ onClose }: SetAttendanceProps) => {
   <div className="flex flex-col gap-5 sm:gap-7 w-full">
     
     {/* Working Hours */}
-    <div className="flex flex-row gap-4 items-center">
+    <div className="flex flex-row items-center justify-between">
       <label className="text-[#5863B2] text-base sm:text-xl font-bold w-[40%] text-left">
         Working Hours
       </label>
@@ -118,8 +120,7 @@ const SetAttendance = ({ onClose }: SetAttendanceProps) => {
         type="text"
         value={workingHours}
         onChange={(event) => setWorkingHours(event.target.value)}
-        className="p-3 rounded-lg outline-none border border-[#C9CAE5] bg-white shadow-sm w-[60%] text-base"
-        placeholder="9:00 AM - 6:00 PM"
+        className="p-3 sm:p-2 rounded-[10px] border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-[210px] text-[#5764B3] font-semibold text-base placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
       />
     </div>
 
@@ -128,14 +129,14 @@ const SetAttendance = ({ onClose }: SetAttendanceProps) => {
       <label className="text-[#5863B2] text-base sm:text-xl font-bold w-[40%] text-left">
         Working Days
       </label>
-      <div className="w-[60%]">
+      <div className="w-[42%]">
         <div className="flex gap-1">
           {days.map((day) => (
             <button
               type="button"
               key={day}
               onClick={() => toggleDay(day)}
-              className={`flex-1 text-center py-2 rounded-md border border-[#C9CAE5] shadow-sm text-xs font-medium transition-all ${
+              className={`flex-1 text-center py-2 rounded-md border border-[#C9CAE5] shadow-sm text-[10px] font-medium transition-all ${
                 workingDays.includes(day)
                   ? "bg-[#5764B3] text-white"
                   : "bg-white text-[#5863B2]"
@@ -157,7 +158,7 @@ const SetAttendance = ({ onClose }: SetAttendanceProps) => {
         type="time"
         value={startTime}
         onChange={(event) => setStartTime(event.target.value)}
-        className="p-3 rounded-lg outline-none border border-[#C9CAE5] bg-white shadow-sm w-[60%] text-base"
+        className="p-3 sm:p-2 rounded-[10px] border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-[210px] text-[#5764B3] font-semibold text-base placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
       />
     </div>
 
@@ -170,7 +171,7 @@ const SetAttendance = ({ onClose }: SetAttendanceProps) => {
         type="time"
         value={endTime}
         onChange={(event) => setEndTime(event.target.value)}
-        className="p-3 rounded-lg outline-none border border-[#C9CAE5] bg-white shadow-sm w-[60%] text-base"
+        className="p-3 sm:p-2 rounded-[10px] border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-[210px] text-[#5764B3] font-semibold text-base placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
       />
     </div>
   </div>

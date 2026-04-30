@@ -215,8 +215,8 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-transparent px-4 sm:px-0">
-      <div className="min-h-[80vh] w-full max-w-xs sm:max-w-[80%] sm:w-[50%] sm:min-w-[500px] rounded-3xl mx-auto relative flex flex-col overflow-hidden bg-[#E9EBF7] px-6 sm:p-10 py-8 sm:py-10">
+    <div className="w-full flex items-center justify-center bg-transparent p-4 sm:p-0">
+      <div className="min-h-[80vh] w-full max-w-xs sm:max-w-[80%] sm:w-[50%] sm:min-w-[500px] rounded-3xl mx-auto relative flex flex-col overflow-hidden bg-[#E9EBF7] px-6 sm:p-10 py-8 sm:py-10 ">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 hover:bg-white shadow-lg border border-[#5764B3]/50 cursor-pointer transition-all duration-200 hover:scale-110"
@@ -249,7 +249,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
         <div className="flex rounded-xl overflow-hidden w-[90%] sm:w-[80%] mb-6 sm:mb-8 mx-auto bg-white shadow-sm">
           <button
             onClick={() => setActiveTab("leave")}
-            className={`flex-1 p-3 sm:p-8 text-center text-lg sm:text-3xl font-bold transition-all ${
+            className={`flex-1 rounded-xl p-3 sm:p-2 text-center text-lg sm:text-xl font-bold transition-all ${
               activeTab === "leave"
                 ? "text-white bg-[#5764B3]"
                 : "text-[#5764B3] bg-white"
@@ -260,7 +260,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
 
           <button
             onClick={() => setActiveTab("holiday")}
-            className={`flex-1 p-3 sm:p-8 text-center text-lg sm:text-3xl font-bold transition-all ${
+            className={`flex-1 rounded-xl p-3 sm:p-4 text-center text-lg sm:text-xl font-bold transition-all ${
               activeTab === "holiday"
                 ? "text-white bg-[#5764B3]"
                 : "text-[#5764B3] bg-white"
@@ -277,7 +277,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
                 key={index}
                 className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-4"
               >
-                <div className="flex flex-col w-full">
+                {/* <div className="flex flex-col w-full">
                   {index === 0 && (
                     <label className="mb-3 sm:mb-5 text-xl sm:text-3xl text-[#5764B3] font-bold">
                       Leave Type
@@ -294,19 +294,28 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
                     disabled={savingLeave}
                     className="p-3 sm:p-4 rounded-lg border border-[#C9CAE5] bg-[#F5F6FB] outline-none w-full text-[#5764B3] placeholder:text-[#5764B3]/40 disabled:opacity-60"
                   />
-                </div>
+                </div> */}
 
                 <div className="flex flex-col w-full">
-                  {index === 0 && (
-                    <label className="mb-3 sm:mb-5 text-xl sm:text-3xl text-[#5764B3] font-bold">
-                      Days
-                    </label>
-                  )}
+  <input
+    type="text"
+    placeholder="Leave Type"
+    value={leave.name}
+    onChange={(event) =>
+      handleLeaveChange(index, "name", event.target.value)
+    }
+    disabled={savingLeave}
+    className="p-3 sm:p-4 rounded-xl border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-full text-[#5764B3] font-semibold text-base sm:text-lg placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
+  />
+</div>
+
+                <div className="flex flex-col w-full">
+                  
 
                   <div className="flex items-center gap-3">
                     <input
                       type="number"
-                      placeholder="0"
+                      placeholder="Days"
                       min={1}
                       value={leave.totalDaysPerYear || ""}
                       onChange={(event) =>
@@ -317,7 +326,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
                         )
                       }
                       disabled={savingLeave}
-                      className="p-3 sm:p-4 rounded-lg border border-[#C9CAE5] bg-[#F5F6FB] outline-none w-full text-[#5764B3] disabled:opacity-60"
+                      className="p-3 sm:p-4 rounded-xl border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-full text-[#5764B3] font-semibold text-base sm:text-lg placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
                     />
 
                     {leaveTypes.length > 1 && (
@@ -348,12 +357,11 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
             </button>
 
             <div className="flex flex-col mt-4">
-              <label className="mb-3 sm:mb-5 text-xl sm:text-3xl text-[#5764B3] font-bold">
-                Total Leaves
-              </label>
+              
 
               <input
                 type="number"
+                placeholder="Total Leaves"
                 value={totalLeaves}
                 onChange={(event) =>
                   setTotalLeaves(
@@ -361,7 +369,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
                   )
                 }
                 disabled={savingLeave}
-                className="p-3 sm:p-4 rounded-lg border border-[#c9c9c9] bg-[#F5F6FB] outline-none w-full sm:w-[50%] text-[#5764B3] disabled:opacity-60"
+                className="p-3 sm:p-4 rounded-xl border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-80 text-[#5764B3] font-semibold text-base sm:text-lg placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60 "
               />
             </div>
 
@@ -396,7 +404,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
                       handleHolidayChange(index, "name", event.target.value)
                     }
                     disabled={savingHoliday}
-                    className="p-3 sm:p-4 rounded-lg border border-[#c9c9c9] bg-[#F5F6FB] outline-none text-[#5764B3] placeholder:text-[#5764B3]/40 disabled:opacity-60"
+                    className="p-3 sm:p-4 rounded-xl border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-full text-[#5764B3] font-semibold text-base sm:text-lg placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
                   />
                 </div>
 
@@ -408,7 +416,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
                       handleHolidayChange(index, "date", event.target.value)
                     }
                     disabled={savingHoliday}
-                    className="p-3 sm:p-4 rounded-lg border border-[#c9c9c9] bg-[#F5F6FB] outline-none text-[#5764B3] disabled:opacity-60"
+                    className="p-3 sm:p-4 rounded-xl border-2 border-[#5764B3]/40 bg-[#ECEEF8] outline-none w-full text-[#5764B3] font-semibold text-base sm:text-lg placeholder:text-[#5764B3] placeholder:font-semibold disabled:opacity-60"
                   />
                 </div>
 
