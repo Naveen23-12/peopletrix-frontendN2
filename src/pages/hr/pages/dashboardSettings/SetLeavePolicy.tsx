@@ -348,7 +348,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
               type="button"
               onClick={handleAddLeave}
               disabled={savingLeave}
-              className="flex items-center gap-2 text-[#5764B3] font-medium my-2 text-sm sm:text-base"
+              className="flex items-center gap-2 text-[#5764B3] font-medium mt-10 text-sm sm:text-base"
             >
               <span className="w-6 h-6 sm:w-5 sm:h-5 flex items-center justify-center rounded-md bg-[#5764B3] text-white text-xs sm:text-sm leading-none cursor-pointer">
                 ＋
@@ -356,7 +356,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
               Add Leave
             </button>
 
-            <div className="flex flex-col mt-4">
+            <div className="flex flex-col mt-15">
               
 
               <input
@@ -377,7 +377,7 @@ const SetLeavePolicy = ({ onClose }: SetLeavePolicyProps) => {
               type="button"
               onClick={handleSubmitLeave}
               disabled={savingLeave}
-              className={`mt-8 sm:mt-10 mx-auto w-full sm:w-[260px] text-white text-lg sm:text-2xl font-bold py-4 sm:py-3 px-8 rounded-xl flex items-center justify-center gap-2 transition-all ${
+              className={`mt-8 sm:mt-10 mx-auto w-full sm:w-[260px]  text-white text-lg sm:text-2xl font-bold py-4 sm:py-3 px-8 rounded-xl flex items-center justify-center gap-2 transition-all ${
                 savingLeave
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gradient-to-b from-[#5764B3] to-[#252B4D]"

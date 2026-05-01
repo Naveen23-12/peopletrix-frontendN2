@@ -27,6 +27,20 @@ import hospitalImg from "./hospital.png";
 
 import profileImg from "./manwithlaptop.png";
 
+import homeIcon from "./home.svg";
+import navEmployeeIcon from "./office-employee.svg";
+import navLeaveIcon from "./mail-filled.svg";
+import navDocumentsIcon from "./settings-fill.svg";
+import navReportsIcon from "./reports-sharp.svg";
+
+export {
+  homeIcon,
+  navEmployeeIcon,
+  navLeaveIcon,
+  navDocumentsIcon,
+  navReportsIcon,
+};
+
 export {
   loginImg,
   login2,

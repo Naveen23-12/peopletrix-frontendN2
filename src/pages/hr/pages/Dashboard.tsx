@@ -56,7 +56,7 @@ const DashboardCard = ({ title, description, icon, onClick }: CardProps) => {
       className="
         w-[300px] h-[160px]
         rounded-[22px]
-        border-2 border-[#D4D6E2] 
+        border-2 border-[#D4D6E2]
         bg-[#F8F8FF]
         px-4 py-7
         cursor-pointer
@@ -182,7 +182,7 @@ const Dashboard = () => {
         <HrNav activePage={activePage} onPageChange={setActivePage} />
 
         <main className="flex-1 p-4 bg-white">
-          <div className="bg-[#EDF0FB] rounded-2xl p-5 min-h-[560px] shadow-sm">
+          <div className="bg-[#EDF0FB] rounded-2xl p-4   min-h-[560px] shadow-sm">
             {renderPage()}
           </div>
         </main>

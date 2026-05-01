@@ -1,12 +1,11 @@
 import {
-  Home,
-  Users,
-  Calendar,
-  FileText,
-  BarChart2,
-} from "lucide-react";
-
-import { dashboardImg } from "../../../assets/images";
+  dashboardImg,
+  homeIcon,
+  navEmployeeIcon,
+  navLeaveIcon,
+  navDocumentsIcon,
+  navReportsIcon,
+} from "../../../assets/images";
 
 export type HrPage =
   | "dashboard"
@@ -22,11 +21,31 @@ type HrNavProps = {
 
 const HrNav = ({ activePage, onPageChange }: HrNavProps) => {
   const menuItems = [
-    { label: "Dashboard", icon: Home, page: "dashboard" },
-    { label: "Employee", icon: Users, page: "employee" },
-    { label: "Leave", icon: Calendar, page: "leave" },
-    { label: "Documents", icon: FileText, page: "documents" },
-    { label: "Reports", icon: BarChart2, page: "reports" },
+    {
+      label: "Dashboard",
+      image: homeIcon,
+      page: "dashboard",
+    },
+    {
+      label: "Employee",
+      image: navEmployeeIcon,
+      page: "employee",
+    },
+    {
+      label: "Leave",
+      image: navLeaveIcon,
+      page: "leave",
+    },
+    {
+      label: "Documents",
+      image: navDocumentsIcon,
+      page: "documents",
+    },
+    {
+      label: "Reports",
+      image: navReportsIcon,
+      page: "reports",
+    },
   ] as const;
 
   return (
@@ -44,13 +63,22 @@ const HrNav = ({ activePage, onPageChange }: HrNavProps) => {
           <div
             key={item.label}
             onClick={() => onPageChange(item.page)}
-            className={`flex items-center gap-3 text-gray-600 hover:text-[#5B6CFF] cursor-pointer transition text-sm md:text-base p-2 rounded-lg ${
+            className={`flex items-center gap-3 cursor-pointer transition text-sm md:text-base p-2 rounded-lg ${
               activePage === item.page
                 ? "bg-[#5B6CFF]/10 text-[#5B6CFF] font-medium"
-                : ""
+                : "text-gray-600 hover:text-[#5B6CFF]"
             }`}
           >
-            <item.icon size={18} />
+            <div
+              className={`w-7 h-7 rounded-md flex items-center justify-center `}
+            >
+              <img
+                src={item.image}
+                alt={item.label}
+                className="w-5 h-5 object-contain"
+              />
+            </div>
+
             <span>{item.label}</span>
           </div>
         ))}
