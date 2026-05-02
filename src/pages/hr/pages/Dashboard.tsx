@@ -54,7 +54,7 @@ const DashboardCard = ({ title, description, icon, onClick }: CardProps) => {
     <div
       onClick={onClick}
       className="
-        w-[300px] h-[160px]
+        w-[280px] h-[160px]
         rounded-[22px]
         border-2 border-[#D4D6E2]
         bg-[#F8F8FF]
@@ -69,7 +69,7 @@ const DashboardCard = ({ title, description, icon, onClick }: CardProps) => {
           {icon}
         </div>
 
-        <h3 className="text-[17px] font-medium text-[#5863B2]">
+        <h3 className="text-[15px] font-medium text-[#5863B2]">
           {title}
         </h3>
       </div>
@@ -90,6 +90,13 @@ const DashboardHome = ({
   openLeave: () => void;
   openAttendance: () => void;
 }) => {
+   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+
+  const firstName =
+    userData?.firstName ||
+    userData?.name ||
+    userData?.fullName?.split(" ")?.[0] ||
+    "User";
   return (
     <div className="w-full h-200 p-10 max-[480px]:p-0">
       {/* Welcome section - keeping your existing image */}
@@ -102,7 +109,7 @@ const DashboardHome = ({
 
   <div className="flex flex-col justify-center pl-10 py-2">
     <h2 className="text-xl md:text-3xl font-bold text-[#5863B2]">
-      Welcome, Deena
+      Welcome, {firstName}
     </h2>
     <p className="text-[#5863B2]/80 text-xs md:text-lg mt-0.5">
       Have a nice day at work
@@ -116,21 +123,21 @@ const DashboardHome = ({
           <DashboardCard
             title="Set Employee fields"
             description="Manage employee fields, roles, and information ect..."
-            icon={<User size={22} fill="white" strokeWidth={2.5} />}
+            icon={<User size={20} fill="white" strokeWidth={2.5} />}
             onClick={openEmployee}
           />
 
           <DashboardCard
             title="Set Leave Policy & Holiday"
             description="Define leave rules, holiday calendars, and approvals."
-            icon={<FileCheck2 size={22} strokeWidth={2.5} />}
+            icon={<FileCheck2 size={20} strokeWidth={2.5} />}
             onClick={openLeave}
           />
 
           <DashboardCard
             title="Set Attendance"
             description="Configure shifts, work hours, and attendance rules."
-            icon={<Clock size={23} strokeWidth={2.5} />}
+            icon={<Clock size={20} strokeWidth={2.5} />}
             onClick={openAttendance}
           />
         </div>

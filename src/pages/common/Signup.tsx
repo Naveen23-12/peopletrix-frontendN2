@@ -180,7 +180,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("firstName")}
                     placeholder="First Name"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
 
                   {errors.firstName && (

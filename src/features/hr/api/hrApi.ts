@@ -27,11 +27,30 @@ export type HolidayPolicyPayload = {
   }[];
 };
 
+
+
 export type AttendancePolicyPayload = {
   workingHours: string;
   workingDays: string[];
   startTime: string;
   endTime: string;
+};
+
+export type InviteEmployeePayload = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  designation: string;
+  department: string;
+};
+
+export const getEmployeesAPI = () => {
+  return MainAPI.get("/employee");
+};
+
+export const inviteEmployeeAPI = (data: InviteEmployeePayload) => {
+  return MainAPI.post("/employee/invite", data);
 };
 
 export const getCustomFieldsAPI = () => {
