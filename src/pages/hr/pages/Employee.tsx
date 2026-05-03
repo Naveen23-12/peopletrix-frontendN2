@@ -150,7 +150,7 @@ const Employee = () => {
       </div>
 
       {/* Table Section */}
-      <div className="w-full max-w-[978px] bg-[#E8EAF8] rounded-[22px] px-[53px] py-[39px]">
+      <div className="w-full  bg-[#E8EAF8] rounded-[22px] px-[53px] py-[39px]">
         <div className="w-full overflow-x-auto">
           <table className="w-full min-w-[850px] border-separate border-spacing-y-[14px]">
             <thead>

@@ -148,7 +148,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#f7f8ff] flex items-center justify-center p-4 md:p-10">
+    <div className="w-full min-h-screen bg-[#f7f8ff] flex items-center justify-center p-4 md:p-10 max-[800px]:p-0">
       <div className="w-full max-w-[1200px] flex flex-col lg:flex-row gap-10 items-center justify-center">
 
       <div className="w-full lg:w-[50%] max-lg:w-[80%] min-w-[320px] max-w-[520px] h-[750px] flex items-center justify-center lg:bg-[#F4F4FC] lg:rounded-3xl lg:shadow-lg lg:px-7 lg:py-9 bg-transparent px-0 py-0">
@@ -180,7 +180,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("firstName")}
                     placeholder="First Name"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.firstName && (
@@ -196,7 +196,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("lastName")}
                     placeholder="Last Name"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.lastName && (
@@ -212,7 +212,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("loginUrl")}
                     placeholder="Email"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.loginUrl && (
@@ -228,7 +228,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("loginId")}
                     placeholder="Login ID"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.loginId && (
@@ -244,7 +244,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("password")}
                     placeholder="Password"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.password && (
@@ -260,7 +260,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("organizationName")}
                     placeholder="Organization Name"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.organizationName && (
@@ -276,7 +276,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("organizationDomain")}
                     placeholder="Organization Domain (e.g. company.com)"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
 
                   {errors.organizationDomain && (
@@ -292,13 +292,13 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                     {...register("orgCode")}
                     placeholder="Organization Code (optional)"
                     disabled={isLoading}
-                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100"
+                    className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 max-[500px]:p-2 max-[500px]:text-[14px]"
                   />
                 </div>
 
-                <div className="flex justify-end text-base mt-2 text-[#5764B3]">
+                <div className="flex justify-end text-base mt-2 text-[#5764B3] max-[500px]:justify-center">
                   <div
-                    className="cursor-pointer hover:underline"
+                    className="cursor-pointer hover:underline "
                     onClick={() => navigate("/login")}
                   >
                     Already have an account?{" "}
@@ -315,7 +315,7 @@ const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
                 type="button"
                 onClick={handleSubmit(onSubmit, onError)}
                 disabled={isLoading || signupSuccess}
-                className={`w-[70%] text-white text-2xl font-bold p-3 rounded-xl shadow hover:opacity-90 transition-all duration-200 flex items-center justify-center ${
+                className={`w-[70%] text-white text-2xl font-bold p-3 rounded-xl shadow hover:opacity-90 transition-all duration-200 flex items-center justify-center max-[500px]:p-1 ${
                   isLoading
                     ? "bg-gray-400 cursor-not-allowed"
                     : signupSuccess

@@ -137,7 +137,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#f7f8ff] flex items-center justify-center p-4 md:p-10">
+    <div className="w-full min-h-screen bg-[#f7f8ff] flex items-center justify-center p-4 md:p-10 max-[800px]:p-0">
       <div className="w-full max-w-[1200px] flex flex-col lg:flex-row gap-10 items-center justify-center">
         <div className="max-lg:hidden lg:flex w-[50%] min-w-[320px] max-w-[520px] h-[650px] bg-[#F4F4FC] rounded-3xl shadow-lg px-10 py-8 flex-col justify-between">
           <div className="text-center flex-1 flex items-center justify-center">
@@ -189,7 +189,7 @@ const Login: React.FC = () => {
                 <select
                   {...register("role")}
                   disabled={isLoading}
-                  className="w-full border-2 border-[#5764B3] rounded-xl p-4 pr-12 outline-none bg-white text-[#5764B3] appearance-none text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full border-2 border-[#5764B3] rounded-xl p-4 pr-12 outline-none bg-transparent text-[#5764B3] appearance-none text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
                   style={selectStyle}
                 >
                   <option value="" disabled>
@@ -212,7 +212,7 @@ const Login: React.FC = () => {
                   {...register("name")}
                   placeholder="Enter Email"
                   disabled={isLoading}
-                  className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
 
                 {errors.name && (
@@ -228,7 +228,7 @@ const Login: React.FC = () => {
                   {...register("password")}
                   placeholder="Password"
                   disabled={isLoading}
-                  className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-white placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full border-2 border-[#5764B3] rounded-xl p-4 mt-2 outline-none bg-transparent placeholder:text-[#5764B3] text-[#5764B3] text-base disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
 
                 {errors.password && (
@@ -256,7 +256,7 @@ const Login: React.FC = () => {
                   : "Login"}
               </button>
 
-              <div className="flex justify-between text-base mt-6 text-[#5764B3]">
+              <div className="flex justify-between text-base mt-6 text-[#5764B3] max-[450px]:text-[14px]">
                 <div
                   className="cursor-pointer hover:underline"
                   onClick={() => navigate("/signup")}

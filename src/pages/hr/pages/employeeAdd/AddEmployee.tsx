@@ -182,7 +182,7 @@ const AddEmployee = ({ onClose, onAdded }: AddEmployeeProps) => {
                   {...register(field.name)}
                   placeholder={field.placeholder}
                   disabled={loading}
-                  className="border-2 w-full border-[#5764B3]/50 rounded-xl p-3 sm:p-4 outline-none bg-white text-[#5764B3] placeholder:text-[#5764B3] disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="border-2 w-full border-[#5764B3]/50 rounded-xl p-3 sm:p-4 outline-none bg-transparent text-[#5764B3] placeholder:text-[#5764B3] disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
 
                 {errors[field.name] && (
