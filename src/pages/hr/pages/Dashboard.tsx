@@ -98,7 +98,7 @@ const DashboardHome = ({
     userData?.fullName?.split(" ")?.[0] ||
     "User";
   return (
-    <div className="w-full h-200 p-10 max-[480px]:p-0">
+    <>
       {/* Welcome section - keeping your existing image */}
       <div className="relative bg-[#E8EAF6] rounded-2xl flex flex-row items-center w-120 mb-6 md:mb-8 overflow-visible pl-28 md:pl-36 pr-6 py-5 max-md:w-auto max-[450px]: ">
   <img
@@ -118,7 +118,7 @@ const DashboardHome = ({
 </div> 
 
       {/* Cards section */}
-      <div className="w-full bg-[#E6E8F5] rounded-[12px] p-8 h-150">
+      <div className="w-full bg-[#E6E8F5] rounded-[12px] p-8 h-fit">
         <div className="flex flex-wrap justify-around gap-5">
           <DashboardCard
             title="Set Employee fields"
@@ -142,9 +142,9 @@ const DashboardHome = ({
           />
         </div>
 
-        <div className="h-[145px]" />
+        {/* <div className="h-[145px]" /> */}
       </div>
-    </div>
+    </>
   );
 };
 
@@ -188,9 +188,11 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row min-h-screen">
         <HrNav activePage={activePage} onPageChange={setActivePage} />
 
-        <main className="flex-1 p-4 bg-white">
-          <div className="bg-[#EDF0FB] rounded-2xl p-4   min-h-[560px] shadow-sm">
+        <main className="flex-1 p-4 bg-white max-w-[1440px] ">
+          <div className="bg-[#EDF0FB] rounded-2xl p-4  shadow-sm">
+            <div className="w-full h-200 p-10 max-[480px]:p-0">
             {renderPage()}
+            </div>
           </div>
         </main>
       </div>
