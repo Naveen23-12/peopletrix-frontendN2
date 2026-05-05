@@ -140,7 +140,7 @@ const HrNav = ({ activePage, onPageChange }: HrNavProps) => {
       </aside>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 bg-white p-4 md:p-6 shadow-lg md:sticky md:top-0 md:h-screen">
+      <aside className="hidden md:block w-64 bg-white p-4 md:p-6 md:sticky md:top-0 md:h-screen">
         <div className="flex justify-center items-center mb-6 md:mb-10">
           <img
             src={dashboardImg}

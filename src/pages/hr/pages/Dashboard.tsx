@@ -100,7 +100,7 @@ const DashboardHome = ({
   return (
     <>
       {/* Welcome section - keeping your existing image */}
-      <div className="relative bg-[#E8EAF6] rounded-2xl flex flex-row items-center w-120 mb-6 md:mb-8 overflow-visible pl-28 md:pl-36 pr-6 py-5 max-md:w-auto max-[450px]: ">
+      <div className="relative bg-[#E8EAF6] rounded-2xl flex flex-row items-center w-120 mb-6 md:mb-8 overflow-visible pl-28 md:pl-36 pr-6 py-5 max-md:w-auto max-[450px]:pl-20 max-[450px]:pr-3">
   <img
     src={dashboardiImg}
     alt="Dashboard icon"
@@ -184,38 +184,38 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FB]">
-      <div className="flex flex-col md:flex-row min-h-screen">
-        <HrNav activePage={activePage} onPageChange={setActivePage} />
+  <div className="min-h-screen bg-[#F4F6FB] overflow-x-hidden">
+    <div className="flex flex-col md:flex-row min-h-screen overflow-x-hidden">
+      <HrNav activePage={activePage} onPageChange={setActivePage} />
 
-        <main className="flex-1 p-4 bg-white max-w-[1440px] ">
-          <div className="bg-[#EDF0FB] rounded-2xl p-4  shadow-sm">
-            <div className="w-full h-200 p-10 max-[480px]:p-0">
+      <main className="flex-1 min-w-0 p-8 bg-white overflow-x-hidden">
+        <div className="bg-[#EDF0FB] rounded-2xl p-4 shadow-sm min-h-[560px] overflow-hidden min-h-full max-w-[1600px]">
+          <div className="w-full min-h-[560px] p-10 max-[480px]:p-0">
             {renderPage()}
-            </div>
           </div>
-        </main>
-      </div>
-
-      {showEmployeeModal && (
-        <ModalWrapper onClose={() => setShowEmployeeModal(false)}>
-          <SetEmployeeFields onClose={() => setShowEmployeeModal(false)} />
-        </ModalWrapper>
-      )}
-
-      {showLeaveModal && (
-        <ModalWrapper onClose={() => setShowLeaveModal(false)}>
-          <SetLeavePolicy onClose={() => setShowLeaveModal(false)} />
-        </ModalWrapper>
-      )}
-
-      {showAttendanceModal && (
-        <ModalWrapper onClose={() => setShowAttendanceModal(false)}>
-          <SetAttendance onClose={() => setShowAttendanceModal(false)} />
-        </ModalWrapper>
-      )}
+        </div>
+      </main>
     </div>
-  );
+
+    {showEmployeeModal && (
+      <ModalWrapper onClose={() => setShowEmployeeModal(false)}>
+        <SetEmployeeFields onClose={() => setShowEmployeeModal(false)} />
+      </ModalWrapper>
+    )}
+
+    {showLeaveModal && (
+      <ModalWrapper onClose={() => setShowLeaveModal(false)}>
+        <SetLeavePolicy onClose={() => setShowLeaveModal(false)} />
+      </ModalWrapper>
+    )}
+
+    {showAttendanceModal && (
+      <ModalWrapper onClose={() => setShowAttendanceModal(false)}>
+        <SetAttendance onClose={() => setShowAttendanceModal(false)} />
+      </ModalWrapper>
+    )}
+  </div>
+);
 };
 
 export default Dashboard;

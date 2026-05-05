@@ -16,6 +16,7 @@ import {
   PasswordReset,
   Success,
   HrDashboard,
+  EmployeeDashboard
 } from "../pages";
 
 const AppRouter: React.FC = () => {
@@ -38,7 +39,7 @@ const AppRouter: React.FC = () => {
         <Route path="/success" element={<Success />} />
 
         <Route path="/dashboard" element={<HrDashboard />} />
-
+        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

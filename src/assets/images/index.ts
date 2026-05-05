@@ -32,7 +32,9 @@ import navEmployeeIcon from "./office-employee.svg";
 import navLeaveIcon from "./mail-filled.svg";
 import navDocumentsIcon from "./settings-fill.svg";
 import navReportsIcon from "./reports-sharp.svg";
+import peopleTrixLogo from "./PeopleTrix.png";
 
+export { peopleTrixLogo };
 export {
   homeIcon,
   navEmployeeIcon,
