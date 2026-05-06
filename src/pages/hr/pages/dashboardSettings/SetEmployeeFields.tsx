@@ -1,58 +1,74 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { Edit2, Info, Plus, Trash2, X } from "lucide-react";
 
 import Gradient from "../../../../components/common/Gradient";
 import { getAxiosErrorMessage } from "../../../../utils";
 import {
-  getCustomFieldsAPI,
-  createCustomFieldAPI,
-} from "../../../../features/hr/api";
+  generateFieldKey,
+  validateCustomFields,
+} from "../../../../utils/validations";
+import { createCustomFieldAPI } from "../../../../features/hr/api";
+
+type SetEmployeeFieldsProps = {
+  onClose: () => void;
+};
 
 type CustomField = {
-  _id?: string;
   fieldKey: string;
   fieldLabel: string;
   fieldType: "string";
   required: boolean;
 };
 
-type SetEmployeeFieldsProps = {
-  onClose: () => void;
-};
-
 const SetEmployeeFields = ({ onClose }: SetEmployeeFieldsProps) => {
   const [fields, setFields] = useState<CustomField[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [scrollTopPercent, setScrollTopPercent] = useState(0);
+  const [isScrollable, setIsScrollable] = useState(false);
 
-  useEffect(() => {
-    const fetchFields = async () => {
-      try {
-        const response = await getCustomFieldsAPI();
-        const result = response.data;
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-        if (result.success && result.data?.length > 0) {
-          setFields(
-            result.data.map((field: CustomField) => ({
-              _id: field._id,
-              fieldKey: field.fieldKey,
-              fieldLabel: field.fieldLabel,
-              fieldType: "string",
-              required: field.required,
-            }))
-          );
-        }
-      } catch (error) {
-        console.error("Failed to fetch custom fields:", error);
-      } finally {
-        setFetching(false);
-      }
-    };
+  const checkScrollable = () => {
+    const element = scrollRef.current;
+    if (!element) return;
 
-    fetchFields();
-  }, []);
+    setIsScrollable(element.scrollHeight > element.clientHeight);
+  };
+
+  const handleScroll = () => {
+    const element = scrollRef.current;
+    if (!element) return;
+
+    const maxScroll = element.scrollHeight - element.clientHeight;
+    setIsScrollable(maxScroll > 0);
+
+    if (maxScroll <= 0) {
+      setScrollTopPercent(0);
+      return;
+    }
+
+    setScrollTopPercent((element.scrollTop / maxScroll) * 100);
+  };
+
+  const handleFieldChange = (index: number, value: string) => {
+    setFields((prev) => {
+      const updated = [...prev];
+
+      updated[index] = {
+        ...updated[index],
+        fieldLabel: value,
+        fieldKey: generateFieldKey(value),
+      };
+
+      return updated;
+    });
+  };
 
   const handleAddField = () => {
+    const newIndex = fields.length;
+
     setFields((prev) => [
       ...prev,
       {
@@ -62,324 +78,267 @@ const SetEmployeeFields = ({ onClose }: SetEmployeeFieldsProps) => {
         required: false,
       },
     ]);
+
+    setTimeout(() => {
+      inputRefs.current[newIndex]?.focus();
+      checkScrollable();
+    }, 100);
   };
 
-  const handleChange = (
-    index: number,
-    key: keyof CustomField,
-    value: string | boolean
-  ) => {
-    setFields((prev) => {
-      const updated = [...prev];
-
-      updated[index] = {
-        ...updated[index],
-        [key]: value,
-      };
-
-      if (key === "fieldLabel" && typeof value === "string") {
-        updated[index].fieldKey = value
-          .toLowerCase()
-          .trim()
-          .replace(/\s+/g, "_")
-          .replace(/[^a-z0-9_]/g, "");
-      }
-
-      return updated;
-    });
-  };
-
-  const handleDelete = (index: number) => {
+  const handleDeleteField = (index: number) => {
     setFields((prev) => prev.filter((_, i) => i !== index));
+
+    setTimeout(() => {
+      checkScrollable();
+    }, 100);
   };
 
-  const handleSave = async () => {
-    const hasEmpty = fields.some((field) => !field.fieldLabel.trim());
+  const handleEditField = (index: number) => {
+    inputRefs.current[index]?.focus();
+  };
 
-    if (hasEmpty) {
-      toast.error("All field names must be filled in");
+  const handleSubmit = async () => {
+    const validationError = validateCustomFields(fields);
+
+    if (validationError) {
+      toast.error(validationError);
       return;
     }
 
-    const labels = fields.map((field) => field.fieldLabel.trim().toLowerCase());
-    const hasDuplicates = labels.length !== new Set(labels).size;
-
-    if (hasDuplicates) {
-      toast.error("Field names must be unique");
-      return;
-    }
-
-    const newFields = fields.filter((field) => !field._id);
-
-    if (newFields.length === 0) {
-      toast.success("No new fields to save!");
-      setTimeout(() => onClose(), 1000);
-      return;
-    }
-
-    setLoading(true);
+    setSaving(true);
 
     try {
-      for (const field of newFields) {
-        const response = await createCustomFieldAPI({
-  fieldKey: field.fieldKey,
-  fieldLabel: field.fieldLabel,
-  fieldType: "string",
-  required: field.required,
-});
+      await Promise.all(
+        fields.map((field) =>
+          createCustomFieldAPI({
+            fieldKey: field.fieldKey || generateFieldKey(field.fieldLabel),
+            fieldLabel: field.fieldLabel.trim(),
+            fieldType: "string",
+            required: field.required,
+          })
+        )
+      );
 
-        const result = response.data;
+      toast.success("Employee fields saved successfully!");
 
-        if (!result.success) {
-          toast.error(result.message || `Failed to save: ${field.fieldLabel}`);
-          return;
-        }
-      }
-
-      toast.success("Custom fields saved successfully!");
-      setTimeout(() => onClose(), 1200);
+      setTimeout(() => {
+        onClose();
+      }, 1000);
     } catch (error) {
-      console.error("Save custom fields error:", error);
+      console.error("Employee fields error:", error);
       toast.error(getAxiosErrorMessage(error, "Server error. Try again."));
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
-  const newFieldsCount = fields.filter((field) => !field._id).length;
-
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-transparent">
-      <div className="h-[80vh] max-w-[80%] w-[50%] min-w-[500px] rounded-3xl mx-auto relative flex flex-col bg-[#E9EBF7] overflow-hidden pb-3">
+    <div className="w-full flex items-center justify-center bg-transparent p-4 sm:p-0">
+      <div
+        className="
+          w-full
+          max-w-[95%]
+          sm:max-w-[650px]
+          md:max-w-[700px]
+          lg:w-[50%]
+          h-[88vh]
+          max-h-[610px]
+          rounded-3xl
+          mx-auto
+          relative
+          flex
+          flex-col
+          overflow-hidden
+          bg-[#E9EBF7]
+          px-5
+          sm:px-10
+          md:px-14
+          py-8
+          sm:py-10
+        "
+      >
+        {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 hover:bg-white shadow-lg border border-[#5764B3]/50 cursor-pointer transition-all duration-200 hover:scale-110"
+          className="absolute top-4 right-4 z-30 w-8 h-8 flex items-center justify-center rounded-md bg-[#5764B3] hover:bg-[#4a56a0] cursor-pointer transition-all duration-200 hover:scale-110"
+          aria-label="Close"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5 text-[#5764B3]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="3"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <X size={18} className="text-white" strokeWidth={3} />
         </button>
 
-        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 pointer-events-none">
+        {/* Gradient decorations */}
+        <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 pointer-events-none hidden sm:block">
           <Gradient />
         </div>
-        <div className="absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4 pointer-events-none">
+
+        <div className="absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4 pointer-events-none hidden sm:block">
           <Gradient />
         </div>
 
-        <h1 className="text-center text-2xl font-semibold text-[#5863B2] mb-2 mt-10 shrink-0">
-          Custom Employee Fields
-        </h1>
+        {/* Scroll Area */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="relative z-10 h-full min-h-0 overflow-y-auto overflow-x-hidden pr-8 employee-fields-scroll"
+        >
+          <div className="min-h-full flex flex-col justify-center">
+            {/* Title */}
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <h1 className="text-[#5863B2] text-[20px] sm:text-[24px] font-semibold text-center">
+                Set Employee Fields
+              </h1>
 
-        <p className="text-center text-sm text-[#999] mb-4 shrink-0">
-          These fields will appear in the employee onboarding form
-        </p>
+              <span className="w-[16px] h-[16px] rounded-[3px] border border-[#5863B2] flex items-center justify-center shrink-0">
+                <Info size={11} className="text-[#5863B2]" />
+              </span>
+            </div>
 
-        <div className="flex justify-center flex-1 overflow-hidden">
-          <div className="scroll-area w-[90%] overflow-y-auto">
-            <style>{`
-              .scroll-area::-webkit-scrollbar { width: 6px; }
-              .scroll-area::-webkit-scrollbar-track { background: transparent; }
-              .scroll-area::-webkit-scrollbar-thumb { background: #5764B3; border-radius: 12px; }
-              .scroll-area { scrollbar-width: thin; scrollbar-color: #5764B3 transparent; }
-            `}</style>
-
-            <div className="flex flex-col space-y-3 py-2">
-              {fetching ? (
-                <div className="flex justify-center py-8">
-                  <svg
-                    className="animate-spin h-8 w-8 text-[#5764B3]"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                </div>
-              ) : fields.length === 0 ? (
-                <div className="text-center py-8 text-[#999]">
-                  <p className="text-base">No custom fields yet.</p>
-                  <p className="text-sm mt-1">
-                    Click "Add New Field" to create one.
-                  </p>
-                </div>
-              ) : (
-                fields.map((field, index) => (
+            {/* Dynamic custom fields */}
+            {fields.length > 0 && (
+              <div className="space-y-3 mt-3">
+                {fields.map((field, index) => (
                   <div
                     key={index}
-                    className="w-[90%] mx-auto bg-white rounded-xl p-4 border-2 border-[#5764B3]/30 flex flex-col gap-3"
+                    className="
+                      w-full
+                      h-[42px]
+                      rounded-[6px]
+                      border
+                      border-[#5863B2]
+                      bg-transparent
+                      flex
+                      items-center
+                      px-4
+                      sm:px-5
+                    "
                   >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="text"
-                        placeholder="Field Name (e.g. Blood Group)"
-                        value={field.fieldLabel}
-                        onChange={(event) =>
-                          handleChange(index, "fieldLabel", event.target.value)
-                        }
-                        disabled={loading || !!field._id}
-                        className="flex-1 border-2 border-[#5764B3] rounded-xl p-3 outline-none bg-white text-[#5764B3] placeholder:text-[#5764B3]/50 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
-                      />
+                    <input
+                      ref={(element) => {
+                        inputRefs.current[index] = element;
+                      }}
+                      type="text"
+                      value={field.fieldLabel}
+                      onChange={(event) =>
+                        handleFieldChange(index, event.target.value)
+                      }
+                      placeholder="Field Name"
+                      disabled={saving}
+                      className="
+                        flex-1
+                        min-w-0
+                        bg-transparent
+                        outline-none
+                        text-[#5863B2]
+                        placeholder:text-[#5863B2]
+                        text-[13px]
+                        sm:text-[14px]
+                      "
+                    />
 
-                      {!field._id ? (
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(index)}
-                          disabled={loading}
-                          className="w-9 h-9 flex items-center justify-center rounded-full bg-red-50 hover:bg-red-100 border border-red-200 transition-all"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 text-red-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4"
-                            />
-                          </svg>
-                        </button>
-                      ) : (
-                        <span className="text-xs text-green-600 bg-green-50 border border-green-200 px-2 py-1 rounded-lg whitespace-nowrap">
-                          ✅ Saved
-                        </span>
-                      )}
-                    </div>
+                    <div className="flex items-center gap-4 ml-3">
+                      <button
+                        type="button"
+                        onClick={() => handleEditField(index)}
+                        disabled={saving}
+                        className="text-[#5863B2] disabled:opacity-50"
+                      >
+                        <Edit2 size={15} />
+                      </button>
 
-                    <div className="flex items-center justify-between px-1">
-                      <span className="text-xs text-[#999]">
-                        Key:{" "}
-                        <code className="bg-gray-100 px-1 rounded text-[#5764B3]">
-                          {field.fieldKey || "auto_generated"}
-                        </code>
-                      </span>
-
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <span className="text-xs text-[#5764B3]">Required</span>
-
-                        <div
-                          onClick={() =>
-                            !loading &&
-                            !field._id &&
-                            handleChange(index, "required", !field.required)
-                          }
-                          className={`w-10 h-5 rounded-full transition-all duration-200 relative ${
-                            field._id
-                              ? "cursor-not-allowed opacity-60"
-                              : "cursor-pointer"
-                          } ${
-                            field.required ? "bg-[#5764B3]" : "bg-gray-300"
-                          }`}
-                        >
-                          <div
-                            className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${
-                              field.required ? "left-5" : "left-0.5"
-                            }`}
-                          />
-                        </div>
-                      </label>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteField(index)}
+                        disabled={saving}
+                        className="text-[#5863B2] disabled:opacity-50"
+                      >
+                        <Trash2 size={15} />
+                      </button>
                     </div>
                   </div>
-                ))
-              )}
+                ))}
+              </div>
+            )}
 
+            {/* Add field */}
+            <button
+              type="button"
+              onClick={handleAddField}
+              disabled={saving}
+              className="
+                flex
+                items-center
+                justify-center
+                gap-3
+                text-[#5863B2]
+                text-[17px]
+                font-semibold
+                mx-auto
+                mt-6
+                disabled:opacity-50
+              "
+            >
+              <span className="w-[15px] h-[15px] rounded-[2px] bg-[#5863B2] flex items-center justify-center">
+                <Plus size={12} className="text-white" strokeWidth={3} />
+              </span>
+              Add new field
+            </button>
+
+            {/* Submit - only show after field added */}
+            {fields.length > 0 && (
               <button
                 type="button"
-                onClick={handleAddField}
-                disabled={loading}
-                className="w-[90%] mx-auto border-2 border-dashed border-[#5764B3]/50 rounded-xl p-3 text-[#5764B3] text-sm font-semibold hover:bg-[#5764B3]/5 transition-all flex items-center justify-center gap-2"
+                onClick={handleSubmit}
+                disabled={saving}
+                className={`
+                  mt-5
+                  mx-auto
+                  w-[153px]
+                  h-[37px]
+                  rounded-[9px]
+                  flex
+                  items-center
+                  justify-center
+                  text-white
+                  text-[19px]
+                  font-bold
+                  shadow
+                  ${
+                    saving
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-gradient-to-b from-[#5764B3] to-[#252B4D]"
+                  }
+                `}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Add New Field
+                {saving ? "Saving..." : "Submit"}
               </button>
-
-              <div className="h-4" />
-            </div>
+            )}
           </div>
         </div>
 
-        <div className="flex justify-center w-full shrink-0">
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={loading || newFieldsCount === 0}
-            className={`mt-2 w-[250px] text-white text-xl font-bold p-3 rounded-xl shadow mb-4 transition-all duration-200 flex items-center justify-center gap-2 ${
-              loading || newFieldsCount === 0
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-b from-[#5764B3] to-[#252B4D] hover:opacity-90"
-            }`}
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                Saving...
-              </>
-            ) : (
-              `Save ${newFieldsCount} New Field${
-                newFieldsCount !== 1 ? "s" : ""
-              }`
-            )}
-          </button>
-        </div>
+        {/* Custom scrollbar - appears only when needed */}
+        {isScrollable && (
+          <div className="absolute right-4 sm:right-6 top-[92px] bottom-[42px] z-20 w-[8px] rounded-full bg-[#D7DBF0]">
+            <div
+              className="absolute left-0 w-[8px] h-[95px] rounded-full bg-[#5863B2]"
+              style={{
+                top: `calc((100% - 95px) * ${scrollTopPercent / 100})`,
+              }}
+            />
+          </div>
+        )}
+
+        <style>{`
+          .employee-fields-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+
+          .employee-fields-scroll::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+          }
+        `}</style>
       </div>
     </div>
   );
